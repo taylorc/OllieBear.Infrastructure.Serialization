@@ -19,7 +19,7 @@ jobs:
     - name: Restore Infrastructure.Serialization.Interfaces project dependencies
       run: dotnet restore src/Infrastructure.Serialization.Interfaces/Infrastructure.Serialization.Interfaces.csproj
     - name: Build Infrastructure.Serialization.Interfaces project
-      run: dotnet build src/Infrastructure.Logging/Infrastructure.Serialization.Interfaces.csproj --no-restore --configuration Release
+      run: dotnet build src/Infrastructure.Serialization.Interfaces/Infrastructure.Serialization.Interfaces.csproj --no-restore --configuration Release
     - name: Pack Infrastructure.Serialization.Interfaces project
       run: dotnet pack src/Infrastructure.Serialization.Interfaces/Infrastructure.Serialization.Interfaces.csproj --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -o .
     - name: Publish Infrastructure.Serialization.Interfaces package to NuGet
