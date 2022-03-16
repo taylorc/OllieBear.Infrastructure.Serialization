@@ -1,0 +1,26 @@
+name: publish Infrastructure.Serialization.Interfaces to nuget
+
+on:
+  push:
+    branches:
+      - main # Your default release branch
+    paths:
+      - 'src/Infrastructure.Serialization.Interfaces/**'
+jobs:
+  build:
+    name: list Infrastructure.Serialization.Interfaces on nuget.org
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore Infrastructure.Serialization.Interfaces project dependencies
+      run: dotnet restore src/Infrastructure.Serialization.Interfaces/Infrastructure.Serialization.Interfaces.csproj
+    - name: Build Infrastructure.Serialization.Interfaces project
+      run: dotnet build src/Infrastructure.Logging/Infrastructure.Serialization.Interfaces.csproj --no-restore --configuration Release
+    - name: Pack Infrastructure.Serialization.Interfaces project
+      run: dotnet pack src/Infrastructure.Serialization.Interfaces/Infrastructure.Serialization.Interfaces.csproj --no-build --configuration Release --include-symbols -p:SymbolPackageFormat=snupkg -o .
+    - name: Publish Infrastructure.Serialization.Interfaces package to NuGet
+      run: dotnet nuget push *.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source "https://api.nuget.org/v3/index.json" --skip-duplicate

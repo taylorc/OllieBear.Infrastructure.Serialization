@@ -18,12 +18,26 @@ namespace Infrastructure.Serialization
 
             var result = new XmlSerializer(typeof(T)).Deserialize(stream);
 
-            if (!(result is T))
+            if (result is not T returnedResult)
             {
                 throw new Exception($"Unable to deserialize message into type {typeof(T).Name}: {args}");
             }
 
-            return (T)result;
+            return returnedResult;
+        }
+
+        public T DeserializeTo<T>(string args) where T : class
+        {
+            var reader = new XmlTextReader(args);
+
+            var result = new XmlSerializer(typeof(T)).Deserialize(reader);
+
+            if (result is not T returnedResult)
+            {
+                throw new Exception($"Unable to deserialize message into type {typeof(T).Name}: {args}");
+            }
+
+            return returnedResult;
         }
 
         public object DeserializeToType(byte[] args, Type type)
@@ -33,7 +47,26 @@ namespace Infrastructure.Serialization
             return new XmlSerializer(type).Deserialize(stream);
         }
 
-        public byte[] ToPayload(object o)
+        public object DeserializeToType(string args, Type type)
+        {
+            var reader = new XmlTextReader(args);
+
+            return new XmlSerializer(type).Deserialize(reader);
+        }
+
+        public byte[] ToByteArrayPayload(object o)
+        {
+            var sw = XmlParser(o);
+            return Encoding.UTF8.GetBytes(sw.ToString());
+        }
+
+        public string ToStringPayload(object o)
+        {
+            var sw = XmlParser(o);
+            return sw.ToString();
+        }
+
+        private StringWriter XmlParser(object o)
         {
             var serializer = new XmlSerializer(o.GetType());
 
@@ -42,16 +75,12 @@ namespace Infrastructure.Serialization
             foreach (var ns in Namespaces ?? new Dictionary<string, string>())
                 namespaces.Add(ns.Key, ns.Value);
 
-            using (var sw = new StringWriter())
-            {
-                using (var writer = XmlWriter.Create(sw))
-                {
-                    writer.WriteProcessingInstruction("xml", "version='1.0'");
+            using var sw = new StringWriter();
+            using var writer = XmlWriter.Create(sw);
+            writer.WriteProcessingInstruction("xml", "version='1.0'");
 
-                    serializer.Serialize(writer, o, namespaces);
-                    return Encoding.UTF8.GetBytes(sw.ToString());
-                }
-            }
+            serializer.Serialize(writer, o, namespaces);
+            return sw;
         }
     }
 }

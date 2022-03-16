@@ -6,8 +6,15 @@ namespace Infrastructure.Serialization.Interfaces
     {
         TResult DeserializeTo<TResult>(byte[] args) where TResult : class;
 
+        TResult DeserializeTo<TResult>(string args) where TResult : class;
+
         object DeserializeToType(byte[] args, Type type);
 
-        byte[] ToPayload(object o);
+        object DeserializeToType(string args, Type type);
+
+        byte[] ToByteArrayPayload(object o);
+
+        string ToStringPayload(object o);
+
     }
 }

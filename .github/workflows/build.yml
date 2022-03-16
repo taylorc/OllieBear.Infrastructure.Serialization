@@ -1,0 +1,29 @@
+name: .NET Core
+
+on:
+  workflow_dispatch:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+          dotnet-version: '6.0.x'
+    - name: Install dependencies Infrastructure.Serialization
+      run: dotnet restore .\src\Infrastructure.Serialization\Infrastructure.Serialization.csproj
+    - name: Install dependencies Infrastructure.Serialization.Interfaces
+      run: dotnet restore .\src\Infrastructure.Serialization.Interfaces\Infrastructure.Serialization.Interfaces.csproj
+    - name: Build Infrastructure.Serialization
+      run: dotnet build .\src\IInfrastructure.Serialization\Infrastructure.Serialization.csproj --configuration Release --no-restore
+    - name: Build Infrastructure.Serialization.Interfaces
+      run: dotnet build .\src\Infrastructure.Infrastructure.Serialization.Interfaces\Infrastructure.Infrastructure.Serialization.Interfaces.csproj --configuration Release --no-restore

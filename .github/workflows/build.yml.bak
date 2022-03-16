@@ -1,0 +1,37 @@
+name: .NET Core
+
+on:
+  workflow_dispatch:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+          dotnet-version: '6.0.x'
+    - name: Install dependencies Logging.Serilog
+      run: dotnet restore .\src\Infrastructure.Logging\Infrastructure.Logging.csproj
+    - name: Install dependencies Logging.Serilog
+      run: dotnet restore .\src\Infrastructure.Logging.Serilog\Infrastructure.Logging.Serilog.csproj
+    - name: Install dependencies Logging.Serilog
+      run: dotnet restore .\src\Infrastructure.Logging.Serilog.DependencyInjection\Infrastructure.Logging.Serilog.DependencyInjection.csproj
+    - name: Install dependencies Logging.Serilog
+      run: dotnet restore .\src\Infrastructure.Logging.Hosting.Extensions\Infrastructure.Logging.Hosting.Extensions.csproj
+    - name: Build Logging
+      run: dotnet build .\src\Infrastructure.Logging\Infrastructure.Logging.csproj --configuration Release --no-restore
+    - name: Build Logging.Serilog
+      run: dotnet build .\src\Infrastructure.Logging.Serilog\Infrastructure.Logging.Serilog.csproj --configuration Release --no-restore
+    - name: Build Logging.Serilog.DependencyInjection
+      run: dotnet build .\src\Infrastructure.Logging.Serilog.DependencyInjection\Infrastructure.Logging.Serilog.DependencyInjection.csproj --configuration Release --no-restore
+    - name: Build Logging.Hosting.Extensions
+      run: dotnet build .\src\Infrastructure.Logging.Hosting.Extensions\Infrastructure.Logging.Hosting.Extensions.csproj --configuration Release --no-restore
