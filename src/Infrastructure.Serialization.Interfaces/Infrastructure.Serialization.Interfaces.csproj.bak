@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-			<PackageId>Vprc.Infrastructure.Serialization.Interfaces</PackageId>
+    <TargetFramework>net6.0</TargetFramework>
+			<PackageId>OllieBear.Infrastructure.Serialization.Interfaces</PackageId>
     <Authors>HSD</Authors>
     <Description>Serialization Interfaces module</Description>
     <Copyright>Copyright © 2018</Copyright>
+	  <Version>2.0.0.0</Version>
   </PropertyGroup>
 
 </Project>
