@@ -7,11 +7,11 @@ using Xunit;
 
 namespace Infrastructure.Serialization.Tests
 {
-    public class XmlSerilizerTests
+    public class XmlSerializerTests
     {
         private readonly ISerializer _serializer;
 
-        public XmlSerilizerTests()
+        public XmlSerializerTests()
         {
             _serializer = new SerializerXml();
         }
@@ -20,7 +20,7 @@ namespace Infrastructure.Serialization.Tests
         {
             var xml = new StringReader(File.ReadAllText("books-xml.xml"));
 
-            var bookXml = _serializer.DeserializeTo<BookXml>(Encoding.Default.GetBytes(xml.ReadToEnd().ToCharArray()));
+            var bookXml = _serializer.DeserializeTo<Catalog>(Encoding.Default.GetBytes(xml.ReadToEnd().ToCharArray()));
 
             bookXml.ShouldNotBeNull();
 

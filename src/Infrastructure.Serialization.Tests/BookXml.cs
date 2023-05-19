@@ -15,7 +15,7 @@ namespace Infrastructure.Serialization.Tests
     // }
 
     [XmlRoot(ElementName = "book")]
-    public class BookXml
+    public class Book
     {
 
         [XmlElement(ElementName = "author")]
@@ -48,7 +48,7 @@ namespace Infrastructure.Serialization.Tests
     {
 
         [XmlElement(ElementName = "book")]
-        public List<BookXml> Book { get; set; }
+        public List<Book> Book { get; set; }
     }
 
 
